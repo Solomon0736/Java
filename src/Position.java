@@ -1,3 +1,4 @@
+import java.util.Objects;
 
 public class Position {
     private  int x;
@@ -8,6 +9,7 @@ public class Position {
         this.x = x;
         this.y = y;
     }
+
     public int getX(){
         return this.x;
     }
@@ -16,37 +18,34 @@ public class Position {
         return this.y;
     }
 
-    public Position getPosToSouth(){
-        return new Position(this.x,this.y+1);
+    public Position getPosToSouth() {
+        return new Position(x, y + 1);
     }
 
-    public Position getPosToNorth(){
-        return new Position(this.x,this.y-1);
+    public Position getPosToNorth() {
+        return new Position(x, y - 1);
     }
 
-    public Position getPosToWest(){
-        return new Position(this.x+1,this.y);
-
+    public Position getPosToWest() {
+        return new Position(x - 1, y);
     }
 
-    public Position getPosToEast(){
-        return new Position(this.x-1,this.y);
-
+    public Position getPosToEast() {
+        return new Position(x + 1, y);
     }
-
-    public boolean equal(Object o){
-        if (o == this) return true;
-        if (!(o instanceof Position)) return false;
-
-        Position p = (Position)o ;
-        return x == p.x && y == p.y;
+    public boolean equals(Object o) {
+        // Kontrollera om objektet är samma som den aktuella instansen
+        if (this == o) return true;
+        // Kontrollera om objektet är en instans av Position-klassen
+        if (!(o instanceof Position)) {
+            return false;
+        }
+        // Om objektet är av Position-typ, kasta om det till en Position-referens
+        Position position = (Position) o;
+        return x == position.x && y == position.y;
     }
-
     public int hashCode(){
-
+        return Objects.hash(x, y);
     }
-
-
-
 
 }
