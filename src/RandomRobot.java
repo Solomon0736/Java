@@ -1,56 +1,58 @@
-import java.io.File;
+import java.util.Objects;
 import java.util.Random;
-import java.util.Scanner;
 
 public class RandomRobot {
+    private  Maze maze;
     private Position position;
-    private Position previousPosition;
-    private Maze maze;
+    private Position previousPosition; // Tredje attribut
 
     public RandomRobot(Maze maze) {
-
         this.maze = maze;
-        position = maze.getstarted();
-        previousPosition= new Position(position.getX() - 1, position.getY());
+        this.position = maze.getStart();
     }
 
-    public void move() {
+        public void move() {
+            Position new_position;
+            Random random = new Random();
 
-        Position new_position = null;
-        do {
-            Random rand = new Random();
-            int number = rand.nextInt(4) + 1;
+            do {
+                int direction = random.nextInt(4); // 0: North, 1: South, 2: West, 3: East
 
-            try {
-                if (number == 1) {
-                    new_position = position.getPosToSouth();
-                } else if (number == 2) {
-                    new_position = position.getPosToEast();
-                } else if (number == 3) {
-                    new_position = position.getPosToNorth();
-                } else {
-                    new_position = previousPosition;
+                switch (direction) {
+                    case 0:
+                        new_position = position.getPosToNorth();
+                        break;
+                    case 1:
+                        new_position = position.getPosToSouth();
+                        break;
+                    case 2:
+                        new_position = position.getPosToWest();
+                        break;
+                    case 3:
+                        new_position = position.getPosToEast();
+                        break;
+                    default:
+                        new_position = position; // Stanna kvar på nuvarande position om något oväntat inträffar
                 }
 
-                if (maze.ismovable(new_position)) {
+                if (maze.isMovable(new_position) && !new_position.equals(previousPosition)) {
+                    previousPosition = position;
                     position = new_position;
-                } else {
+                    break;
+                } else if (new_position.equals(previousPosition)) {
+                    // Gå tillbaka till den senast besökta positionen
+                    position = previousPosition;
                     break;
                 }
 
-            } catch (Exception e) {
-                System.out.println("error out of bound" + e.getMessage());
-            }
-
-        } while (((new_position.getX() < 0 || new_position.getX() >= maze.getNumRows() ||
-                new_position.getY() < 0 || new_position.getY() >= maze.getNumColumns())));
-    }
+            } while (true);
+        }
 
     public Position getPosition() {
         return position;
     }
 
-    private void setPosition(Position position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
