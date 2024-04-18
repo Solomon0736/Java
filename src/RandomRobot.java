@@ -12,40 +12,40 @@ public class RandomRobot {
     }
 
         public void move() {
-            Position new_position;
-            Random random = new Random();
+        Position newposition;
+        Random rand = new Random();
 
-            do {
-                int direction = random.nextInt(4); // 0: North, 1: South, 2: West, 3: East
+        do {
+            int number = rand.nextInt(4);
 
-                switch (direction) {
-                    case 0:
-                        new_position = position.getPosToNorth();
-                        break;
-                    case 1:
-                        new_position = position.getPosToSouth();
-                        break;
-                    case 2:
-                        new_position = position.getPosToWest();
-                        break;
-                    case 3:
-                        new_position = position.getPosToEast();
-                        break;
-                    default:
-                        new_position = position; // Stanna kvar på nuvarande position om något oväntat inträffar
-                }
-
-                if (maze.isMovable(new_position) && !new_position.equals(previousPosition)) {
-                    previousPosition = position;
-                    position = new_position;
+            switch(number){
+                case 0:
+                    newposition = position.getPosToEast();
                     break;
-                } else if (new_position.equals(previousPosition)) {
-                    // Gå tillbaka till den senast besökta positionen
-                    position = previousPosition;
+                case 1:
+                    newposition= position.getPosToNorth();
                     break;
-                }
+                case 2:
+                    newposition= position.getPosToSouth();
+                    break;
+                case 3:
+                    newposition = position.getPosToWest();
+                    break;
+                default:
+                    newposition= position;
+            }
 
-            } while (true);
+            if (!newposition.equals(previousPosition)&& maze.isMovable(newposition)){
+                previousPosition = position;
+                position=newposition;
+                break;
+            }else if (newposition.equals(previousPosition)){
+                position=previousPosition;  break;
+            }
+
+
+        }while (true);
+
         }
 
     public Position getPosition() {

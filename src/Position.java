@@ -28,7 +28,7 @@ public class Position {
     public int hashCode() {
         return Objects.hash(x, y);
     }
-
+  //return 31*x+y
     public Position getPosToNorth() {
         return new Position(x , y-1);
     }
